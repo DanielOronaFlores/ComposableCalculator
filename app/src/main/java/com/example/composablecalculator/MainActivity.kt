@@ -4,33 +4,29 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import buttons.ButtonCalculator
 import com.example.composablecalculator.ui.theme.ComposableCalculatorTheme
+import display.Display
+import display.DisplayViewModel
 import styles.DeleteButtonColor
-import styles.DisplayColor
-import styles.DisplayTypography
 import styles.EqualButtonColor
 import styles.NumberButtonColor
 import styles.OperatorButtonColor
 
 class MainActivity : ComponentActivity() {
+    private val viewModel: DisplayViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -40,7 +36,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Screen()
+                    Screen(viewModel)
                 }
             }
         }
@@ -48,7 +44,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun ButtonRow(symbols: List<String>) {
+fun ButtonRow(symbols: List<String>, viewModel: DisplayViewModel) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly
@@ -64,7 +60,7 @@ fun ButtonRow(symbols: List<String>) {
 
             ButtonCalculator(
                 text = symbol,
-                onClick = {},
+                onClick = { viewModel.updateText(symbol) },
                 color = color,
                 fontSize = fontSize
             )
@@ -72,9 +68,8 @@ fun ButtonRow(symbols: List<String>) {
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun Screen() {
+fun Screen(viewModel: DisplayViewModel) {
     val symbols = listOf(
         listOf("AC", "( )", "%", "/"),
         listOf("7", "8", "9", "x"),
@@ -84,38 +79,22 @@ fun Screen() {
     )
 
     Column(
-        Modifier
-            .fillMaxSize(),
+        Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceEvenly,
     ) {
-        Display()
+        Display(viewModel)
         for (i in symbols.indices) {
-            ButtonRow(symbols = symbols[i])
+            ButtonRow(symbols = symbols[i], viewModel)
         }
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
-fun Display() {
-    OutlinedTextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(DisplayColor),
-        value = "",
-        onValueChange = {},
-        singleLine = true,
-        textStyle = DisplayTypography,
-        readOnly = true,
-        placeholder = {
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = "0",
-                fontSize = 75.sp,
-                textAlign = TextAlign.End,
-                fontWeight = FontWeight.SemiBold,
-                color = Color.White
-            )
-        }
-    )
+fun DefaultPreview() {
+    val viewModel = DisplayViewModel()
+    ComposableCalculatorTheme {
+        Screen(viewModel)
+    }
 }
