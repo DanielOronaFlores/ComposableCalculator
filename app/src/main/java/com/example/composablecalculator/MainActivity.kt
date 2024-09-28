@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Screen() {
     val symbols = listOf(
-        listOf("AC", "()", "%", "/"),
+        listOf("AC", "( )", "%", "/"),
         listOf("7", "8", "9", "x"),
         listOf("4", "5", "6", "-"),
         listOf("1", "2", "3", "+"),
@@ -71,7 +71,7 @@ fun ButtonRow(symbols: List<String>) {
                 "AC", "<-" -> Pair(DeleteButtonColor, 15.sp)
                 "+", "-", "x", "/", "%" -> Pair(OperatorButtonColor, 45.sp)
                 "=" -> Pair(EqualButtonColor, 40.sp)
-                "()" -> Pair(OperatorButtonColor, 35.sp)
+                "( )" -> Pair(OperatorButtonColor, 25.sp)
                 else -> Pair(NumberButtonColor, 45.sp)
             }
 
