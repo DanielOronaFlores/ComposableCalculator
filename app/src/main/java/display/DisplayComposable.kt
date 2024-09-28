@@ -9,7 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import com.example.composablecalculator.ui.theme.ComposableCalculatorTheme
 import styles.DisplayColor
 import styles.DisplayTypography
 
@@ -35,4 +37,14 @@ fun Display(viewModel: DisplayViewModel) {
             )
         }
     )
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    val viewModel = DisplayViewModel()
+    ComposableCalculatorTheme {
+        Display(viewModel)
+    }
 }

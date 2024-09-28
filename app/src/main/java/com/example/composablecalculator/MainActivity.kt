@@ -17,9 +17,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import buttons.ButtonCalculator
+import calculator.InputHandler
 import com.example.composablecalculator.ui.theme.ComposableCalculatorTheme
 import display.Display
 import display.DisplayViewModel
+import stacks.Stack
 import styles.DeleteButtonColor
 import styles.EqualButtonColor
 import styles.NumberButtonColor
@@ -44,7 +46,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun ButtonRow(symbols: List<String>, viewModel: DisplayViewModel) {
+fun ButtonRow(symbols: List<String>, inputHandler: InputHandler) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly
@@ -60,7 +62,7 @@ fun ButtonRow(symbols: List<String>, viewModel: DisplayViewModel) {
 
             ButtonCalculator(
                 text = symbol,
-                onClick = { viewModel.updateText(symbol) },
+                onClick = { inputHandler.handleInput(symbol) },
                 color = color,
                 fontSize = fontSize
             )
@@ -70,6 +72,8 @@ fun ButtonRow(symbols: List<String>, viewModel: DisplayViewModel) {
 
 @Composable
 fun Screen(viewModel: DisplayViewModel) {
+    val stack = Stack<String>()
+    val inputHandler = InputHandler(viewModel, stack)
     val symbols = listOf(
         listOf("AC", "( )", "%", "/"),
         listOf("7", "8", "9", "x"),
@@ -84,7 +88,7 @@ fun Screen(viewModel: DisplayViewModel) {
     ) {
         Display(viewModel)
         for (i in symbols.indices) {
-            ButtonRow(symbols = symbols[i], viewModel)
+            ButtonRow(symbols = symbols[i], inputHandler)
         }
     }
 }
