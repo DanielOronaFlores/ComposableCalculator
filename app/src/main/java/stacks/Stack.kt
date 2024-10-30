@@ -2,6 +2,7 @@ package stacks
 
 class Stack<T> {
     private val elements: MutableList<T> = mutableListOf()
+    private var isDecimalPointAvailable = true
 
     override fun toString(): String {
         return elements.joinToString(", ", "[", "]")
@@ -37,5 +38,14 @@ class Stack<T> {
 
     fun size(): Int {
         return elements.size
+    }
+
+    fun setDecimalPointAvailability(isAvailable: Boolean) {
+        isDecimalPointAvailable = isAvailable
+        println("Decimal point availability changed to $isAvailable")
+    }
+    fun isDecimalPointAvailable(): Boolean {
+        println("Decimal point availability: $isDecimalPointAvailable")
+        return isDecimalPointAvailable
     }
 }

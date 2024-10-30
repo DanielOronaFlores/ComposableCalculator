@@ -24,24 +24,38 @@ class InputHandler(
 
     fun handleInput(input: String) {
         println("Input received: $input")
-
         when {
             arithmeticOperators.contains(input) -> {
                 if (stack.peek() in arithmeticOperators || stack.peek() == "-") {
                     stack.pop()
                     deleteLastCharacter()
                 }
-                if (stack.peek() in numbers) {
+                if (stack.peek() in numbers || stack.peek() == ".") {
                     stack.push(input)
+                    stack.setDecimalPointAvailability(true)
+                    updateText(input)
+                }
+            }
+            input == "." -> {
+                if (stack.isDecimalPointAvailable()) {
+                    stack.push(input)
+                    stack.setDecimalPointAvailability(false)
                     updateText(input)
                 }
             }
             input == "<-" -> {
+                if (stack.peek() == ".") {
+                    stack.setDecimalPointAvailability(true)
+                }
+                if (stack.peek() in arithmeticOperators) {
+                    stack.setDecimalPointAvailability(false)
+                }
                 stack.pop()
                 deleteLastCharacter()
             }
             input == "AC" -> {
                 stack.clear()
+                stack.setDecimalPointAvailability(true)
                 clearDisplay()
             }
             else -> {
@@ -49,7 +63,6 @@ class InputHandler(
                     updateText(input)
             }
         }
-
         println(stack.toString())
     }
 
