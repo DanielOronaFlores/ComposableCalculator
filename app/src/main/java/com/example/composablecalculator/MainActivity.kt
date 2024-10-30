@@ -21,7 +21,6 @@ import calculator.InputHandler
 import com.example.composablecalculator.ui.theme.ComposableCalculatorTheme
 import display.Display
 import display.DisplayViewModel
-import stacks.Stack
 import styles.DeleteButtonColor
 import styles.EqualButtonColor
 import styles.NumberButtonColor
@@ -72,8 +71,7 @@ fun ButtonRow(symbols: List<String>, inputHandler: InputHandler) {
 
 @Composable
 fun Screen(viewModel: DisplayViewModel) {
-    val stack = Stack<String>()
-    val inputHandler = InputHandler(viewModel, stack)
+    val inputHandler = InputHandler(viewModel, viewModel.stack)
     val symbols = listOf(
         listOf("AC", "( )", "%", "/"),
         listOf("7", "8", "9", "x"),
